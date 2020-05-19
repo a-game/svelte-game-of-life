@@ -1,10 +1,8 @@
-<svelte:options tag="game-of-life" />
-
 <script>
   const tickDelay = 700; // ms
   const colCount = 60;
   const rowCount = 30;
-  let timer = null;
+
   let running = false;
   let cells = Array(colCount * rowCount).fill({ alive: false });
 
@@ -42,6 +40,7 @@
     });
   };
 
+  let timer = null;
   const stop = () => {
     running = false;
 
@@ -150,6 +149,7 @@
   }
 </style>
 
+<svelte:options tag="game-of-life" />
 <main>
   <header>
     <h1>Game of Life</h1>
