@@ -1,3 +1,5 @@
+<svelte:options tag="game-of-life" />
+
 <script>
   const tickDelay = 700; // ms
   const colCount = 60;
@@ -107,6 +109,9 @@
   }
 
   button {
+    outline: none;
+    cursor: pointer;
+    line-height: 1em;
     border: none;
     max-height: 32px;
     padding: 8px 16px;
@@ -117,6 +122,12 @@
     justify-content: center;
     border-radius: 20px;
     transition: filter 0.3s ease;
+  }
+  button:hover {
+    filter: brightness(1.1);
+  }
+  button:active {
+    filter: brightness(0.9);
   }
 
   .game-grid {

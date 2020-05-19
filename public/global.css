@@ -17,14 +17,3 @@ input, button, select, textarea {
 	box-sizing: border-box;
 	margin: 0;
 }
-button {
-	outline: none;
-	cursor: pointer;
-	line-height: 1em;
-}
-button:hover {
-	filter: brightness(1.1);
-}
-button:active {
-	filter: brightness(0.9);
-}
