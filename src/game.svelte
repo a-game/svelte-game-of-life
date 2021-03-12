@@ -1,5 +1,7 @@
+<svelte:options tag="game-of-life" />
+
 <script>
-  const tickDelay = 700; // ms
+  const tickDelay = 500; // ms
   const width = 50;
   const area = Math.pow(width, 2);
 
@@ -15,7 +17,7 @@
     return initial;
   };
 
-  const livingNeighbours = index => {
+  const livingNeighbours = (index) => {
     return [
       cells[index - 1], // left
       cells[index + 1], // right
@@ -24,8 +26,8 @@
       cells[index + width + 1], // bottom right
       cells[index - width - 1], // top left
       cells[index - width], // top
-      cells[index - width + 1] // top right
-    ].filter(c => c && c.alive);
+      cells[index - width + 1], // top right
+    ].filter((c) => c && c.alive);
   };
 
   const tick = () => {
@@ -45,19 +47,18 @@
     running = false;
 
     if (timer) {
-      clearTimeout(timer);
+      clearInterval(timer);
       timer = null;
     }
   };
 
   const run = () => {
     running = true;
-    timer = setTimeout(() => {
+    timer = setInterval(() => {
       cells = tick();
       tickCount++;
-      if (cells.some(c => c.alive)) {
-        run();
-      } else {
+
+      if (!cells.some((c) => c.alive)) {
         stop();
       }
     }, tickDelay);
@@ -69,17 +70,26 @@
   };
 
   const toggle = () => {
-    if (!cells.some(c => c.alive)) {
+    if (!cells.some((c) => c.alive)) {
       cells = setup();
     }
-
-    if (running) {
-      stop();
-    } else {
-      run();
-    }
+    running ? stop() : run();
   };
 </script>
+
+<main>
+  <header>
+    <h1>Game of Life</h1>
+    <button on:click={toggle}>{running ? "Pause" : "Start"}</button>
+    <button on:click={reset}>Reset</button>
+  </header>
+  <div class="game-grid" style="grid-template-columns: repeat({width}, 10px);">
+    {#each cells as cell}
+      <div class="cell" data-status={cell.alive ? "alive" : "dead"} />
+    {/each}
+  </div>
+  <label for="game-grid">Generations: {tickCount}</label>
+</main>
 
 <style>
   main {
@@ -148,20 +158,3 @@
     background: transparent;
   }
 </style>
-
-<svelte:options tag="game-of-life" />
-<main>
-  <header>
-    <h1>Game of Life</h1>
-    <button on:click={toggle}>{running ? 'Pause' : 'Start'}</button>
-    <button on:click={reset}>Reset</button>
-  </header>
-  <div
-    class="game-grid"
-    style="grid-template-columns: repeat({width}, 10px);">
-    {#each cells as cell}
-      <div class="cell" data-status={cell.alive ? 'alive' : 'dead'} />
-    {/each}
-  </div>
-  <label for="game-grid">Generations: {tickCount}</label>
-</main>
