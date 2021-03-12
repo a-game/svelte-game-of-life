@@ -1,15 +1,15 @@
 <script>
   const tickDelay = 700; // ms
-  const colCount = 60;
-  const rowCount = 30;
+  const width = 50;
+  const area = Math.pow(width, 2);
 
+  let tickCount = 0;
   let running = false;
-  let cells = Array(colCount * rowCount).fill({ alive: false });
+  let cells = Array(area).fill({ alive: false });
 
   const setup = () => {
     const initial = [];
-    const x = colCount * rowCount;
-    for (let i = 0; i < x; i++) {
+    for (let i = 0; i < area; i++) {
       initial.push({ alive: Math.random() > 0.5 });
     }
     return initial;
@@ -19,12 +19,12 @@
     return [
       cells[index - 1], // left
       cells[index + 1], // right
-      cells[index + colCount - 1], // bottom left
-      cells[index + colCount], // bottom
-      cells[index + colCount + 1], // bottom right
-      cells[index - colCount - 1], // top left
-      cells[index - colCount], // top
-      cells[index - colCount + 1] // top right
+      cells[index + width - 1], // bottom left
+      cells[index + width], // bottom
+      cells[index + width + 1], // bottom right
+      cells[index - width - 1], // top left
+      cells[index - width], // top
+      cells[index - width + 1] // top right
     ].filter(c => c && c.alive);
   };
 
@@ -54,6 +54,7 @@
     running = true;
     timer = setTimeout(() => {
       cells = tick();
+      tickCount++;
       if (cells.some(c => c.alive)) {
         run();
       } else {
@@ -63,7 +64,7 @@
   };
 
   const reset = () => {
-    cells = Array(colCount * rowCount).fill({ alive: false });
+    cells = Array(area).fill({ alive: false });
     stop();
   };
 
@@ -133,12 +134,11 @@
     margin-top: 20px;
     display: grid;
     justify-items: center;
-    grid-gap: 0.5px;
   }
 
   .cell {
-    height: 20px;
-    width: 20px;
+    height: 10px;
+    width: 10px;
     border: 1px solid var(--border-color);
   }
   .cell[data-status="alive"] {
@@ -158,9 +158,10 @@
   </header>
   <div
     class="game-grid"
-    style="grid-template-columns: repeat({colCount}, minmax(20px, 1fr));">
+    style="grid-template-columns: repeat({width}, 10px);">
     {#each cells as cell}
       <div class="cell" data-status={cell.alive ? 'alive' : 'dead'} />
     {/each}
   </div>
+  <label for="game-grid">Generations: {tickCount}</label>
 </main>
