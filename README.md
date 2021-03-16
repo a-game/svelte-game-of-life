@@ -1,3 +1,3 @@
-# Conway's Game of life using svelte.
+# Conway's Game of life.
 
-This is just a sample project to try out svelte.js
+This is just a sample project to try out building custom elements using svelte.js
